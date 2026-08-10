@@ -29,6 +29,21 @@ class Barang {
   }
 }
 
+class pembeli {
+  String nama;
+  bool statusAnggota;
+
+  pembeli(this.nama, this.statusAnggota);
+
+  void tampilkaninfo() {
+    print("=====================");
+    print("DATA PEMBELI");
+    print("Nama: $nama");
+    print("status anggota : ${statusanggota ? "anggota" : "bukan anggota"}");
+    print("=====================");
+  }
+}
+
 void main() {
   // Membuat tiga data barang menggunakan class Barang.
   Barang barang1 = Barang("Buku Tulis", 3000, 20);
