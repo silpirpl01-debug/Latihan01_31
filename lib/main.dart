@@ -1,46 +1,28 @@
 import "package:flutter/material.dart";
 
-//FUNGSI UNTUK MENGHITUNG TOTAL BELANJA
-double hitungTotal(int jumlah, double harga) {
-  return jumlah * harga;
-}
+class barang {
+  String nama;
+  double harga;
+  int stok;
 
-// FUNGSI MENGHTUNG TOTAL AKHIR SETELAH POTONGAN
-double hitungHargaAkhir(double total, double persenPotongan) {
-  return total - (total * persenPotongan / 100);
+  barang(this.nama, this.harga, this.stok);
+
+  void tampilkaninfo(){
+    print("====================");
+    print("KARTU BARANG");
+    print("Nama : $nama");
+    print("Harga  : Rp$harga.toStringAsFixed(0}");
+    print("stok : $stok");
+     print("====================");
+  }
 }
 
 void main() {
-  //Data transaksi 
-  int jumlah = 5;
-  double harga = 3000;
-
-  //memanggil fungsi 
-  double total = hitungTotal(jumlah, harga);
-
-  //menentukan potongan sesuai aturan koperasi
-  double potongan;
-
-  if  (total > 200000) {
-    potongan = 10;
-  } else if (total > 100000) {
-    potongan = 5;
-  } else {
-    potongan = 0;
-  }
-
-  // Menghitung harga akhir setelah potongan
-  double hargaAkhir = hitungHargaAkhir(total, potongan);
-
-  //Menampilkan hasil total belanja
-  print("=== TRANSAKSI KOPERASI ===");
-  print("Jumlah Barang : $jumlah");
-  print("Harga Satuan : Rp${harga.toStringAsFixed(0)}");
-  print("Total Belanja : Rp${total.toStringAsFixed(0)}");
-  print("Potongan : $potongan%");
-  print("Total Bayar : Rp${hargaAkhir.toStringAsFixed(0)}");
+  barang barang1 = barang("Buku tulis", 3000, 20);
+  barang barang2 = barang("pulpen", 2500, 15);
+  barang barang3 = barang("roti", 5000, 10);
+  print("=== DATA BARANG KOPERASI ===");
+  barang1.tampilkaninfo();
+  barang2.tampilkaninfo();
+  barang3.tampilkaninfo();
 }
-
-/*
-Program dibagi menjadi fungsi agar lebih mudah dipelihara. Jika aturan potongan berubah, cukup mengubah fungsi hitungHargaAkhir() atau logika penentuan potongan satu kali saja sehingga seluruh program langsung mengikuti aturan baru.
-*/
