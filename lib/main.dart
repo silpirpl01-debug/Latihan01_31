@@ -8,6 +8,10 @@ class Barang {
   // Constructor digunakan untuk mengisi data awal setiap barang.
   Barang(this.nama, this.harga, this.stok);
 
+  double nilaiStok(){
+    return harga * stok;
+  }
+
   // Fungsi ini digunakan untuk mencetak informasi lengkap barang.
   void tampilkan() {
     print("========================");
@@ -15,6 +19,7 @@ class Barang {
     print("Nama  : $nama");
     print("Harga : Rp${harga.toStringAsFixed(0)}");
     print("Stok  : $stok");
+    print("nilai stok : Rp${nilaiStok().toStringAsFixed(0)}");
     print("========================");
   }
 }
@@ -50,14 +55,4 @@ void main() {
   for (Barang barang in daftarBarang) {
     barang.tampilkan();
   }
-
-  /*
-  Perbandingan dengan Sprint 3:
-  Pada Sprint 3, data nama dan harga masih disimpan
-  pada List yang berbeda sehingga informasinya terpisah.
-  Sekarang nama, harga, dan stok menjadi satu bagian
-  dalam objek Barang dan disimpan bersama dalam List<Barang>.
-  Struktur ini membuat data lebih teratur, tetap saling
-  berhubungan, dan lebih mudah dikelola jika barang bertambah.
-  */
 }
