@@ -8,8 +8,13 @@ class Barang {
   // Constructor digunakan untuk mengisi data awal setiap barang.
   Barang(this.nama, this.harga, this.stok);
 
-  double nilaiStok(){
+  double nilaiStok() {
     return harga * stok;
+  }
+
+  // Mengecek apakah stok cukup untuk jumlah yang diminta.
+  bool bisaDijual(int diminta) {
+    return stok >= diminta;
   }
 
   // Fungsi ini digunakan untuk mencetak informasi lengkap barang.
@@ -19,7 +24,7 @@ class Barang {
     print("Nama  : $nama");
     print("Harga : Rp${harga.toStringAsFixed(0)}");
     print("Stok  : $stok");
-    print("nilai stok : Rp${nilaiStok().toStringAsFixed(0)}");
+    print("Nilai Stok : Rp${nilaiStok().toStringAsFixed(0)}");
     print("========================");
   }
 }
@@ -54,5 +59,16 @@ void main() {
   // Menjalankan method tampilkan() untuk semua barang dalam List.
   for (Barang barang in daftarBarang) {
     barang.tampilkan();
+  }
+
+  print("");
+  print("=== CEK STOK PENJUALAN ===");
+
+  int diminta = 10;
+
+  if (barang1.bisaDijual(diminta)) {
+    print("Buku Tulis bisa dijual sebanyak $diminta.");
+  } else {
+    print("Stok Buku Tulis tidak mencukupi.");
   }
 }
