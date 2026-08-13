@@ -13,8 +13,7 @@ class Barang {
     return _stok;
   }
 
-  // Method untuk menjual barang.
-  // Stok hanya berkurang jika jumlah yang diminta mencukupi.
+  // Stok hanya dapat berkurang melalui method jual().
   bool jual(int n) {
     if (_stok >= n) {
       _stok -= n;
@@ -29,12 +28,12 @@ class Barang {
     return harga * _stok;
   }
 
-  // Mengecek apakah stok cukup untuk jumlah yang diminta.
+  // Mengecek apakah stok mencukupi.
   bool bisaDijual(int diminta) {
     return _stok >= diminta;
   }
 
-  // Menampilkan informasi barang.
+  // Method untuk menampilkan informasi barang.
   void tampilkan() {
     print("========================");
     print("KARTU BARANG");
@@ -46,11 +45,12 @@ class Barang {
   }
 }
 
-// BarangPromo merupakan turunan dari class Barang.
+
+// ================= BARANG PROMO =================
+
 class BarangPromo extends Barang {
   double persenDiskon;
 
-  // Constructor menggunakan super().
   BarangPromo(
     String nama,
     double harga,
@@ -58,25 +58,60 @@ class BarangPromo extends Barang {
     this.persenDiskon,
   ) : super(nama, harga, stok);
 
-  // Menghitung harga setelah mendapatkan diskon.
+  // Menghitung harga setelah diskon.
   double hargaPromo() {
     return harga - (harga * persenDiskon / 100);
   }
 
-  // Menampilkan informasi barang promo.
-  void tampilkanPromo() {
+  // Override method tampilkan() dari class Barang.
+  @override
+  void tampilkan() {
     print("========================");
     print("KARTU BARANG PROMO");
+    print("Label        : PROMO");
     print("Nama         : $nama");
-    print("Harga Normal : Rp${harga.toStringAsFixed(0)}");
-    print("Stok         : $stok");
+    print("Harga Coret  : Rp${harga.toStringAsFixed(0)}");
     print("Diskon       : $persenDiskon%");
     print("Harga Promo  : Rp${hargaPromo().toStringAsFixed(0)}");
+    print("Stok         : $stok");
     print("========================");
   }
 }
 
-// Class Pembeli dengan status anggota menggunakan bool.
+
+// ================= BARANG GROSIR =================
+
+class BarangGrosir extends Barang {
+  int minimalPembelian;
+
+  BarangGrosir(
+    String nama,
+    double harga,
+    int stok,
+    this.minimalPembelian,
+  ) : super(nama, harga, stok);
+
+  // Mengecek apakah pembelian memenuhi minimal grosir.
+  bool bisaGrosir(int jumlah) {
+    return jumlah >= minimalPembelian;
+  }
+
+  // Override method tampilkan() dari class Barang.
+  @override
+  void tampilkan() {
+    print("========================");
+    print("KARTU BARANG GROSIR");
+    print("Nama              : $nama");
+    print("Harga             : Rp${harga.toStringAsFixed(0)}");
+    print("Stok              : $stok");
+    print("Minimal Pembelian : $minimalPembelian");
+    print("========================");
+  }
+}
+
+
+// ================= PEMBELI =================
+
 class Pembeli {
   String nama;
   bool statusAnggota;
@@ -96,12 +131,27 @@ class Pembeli {
   }
 }
 
+void prosesBeli(String inputjumlah){
+  try {
+    int jumlah = int.parse(inputjumlah);
+
+    print("jumlah pembeli : $jumlah");
+    print("input jumlah berhasil diproses.");
+  } catch (e) {
+    print("input jumlah tidak valid. Silahkan masukkan angka.");
+  } finally{
+    print("transaksi dicatat di log.");
+  }
+}
+
+// ================= MAIN =================
+
 void main() {
-  // Membuat data barang.
+
   Barang barang1 = Barang("Buku Tulis", 3000, 20);
   Barang barang2 = Barang("Pulpen", 2500, 15);
   Barang barang3 = Barang("Roti", 5000, 10);
-
+  barang1._stok = 100;
   // Menyimpan barang dalam List.
   List<Barang> daftarBarang = [
     barang1,
@@ -111,7 +161,6 @@ void main() {
 
   print("=== DAFTAR BARANG KOPERASI ===");
 
-  // Menampilkan daftar barang.
   for (int i = 0; i < daftarBarang.length; i++) {
     print(
       "${i + 1}. ${daftarBarang[i].nama} - "
@@ -120,22 +169,22 @@ void main() {
     );
   }
 
+
   print("");
   print("=== KARTU BARANG ===");
 
-  // Menampilkan informasi setiap barang.
   for (Barang barang in daftarBarang) {
     barang.tampilkan();
   }
 
+
   print("");
   print("=== DATA PEMBELI ===");
 
-  // Membuat objek Pembeli.
   Pembeli pembeli1 = Pembeli("Silvi", true);
 
-  // Menampilkan data pembeli.
   pembeli1.tampilkanInfo();
+
 
   print("");
   print("=== CEK STOK PENJUALAN ===");
@@ -148,10 +197,11 @@ void main() {
     print("Stok Buku Tulis tidak mencukupi.");
   }
 
+
   print("");
   print("=== BARANG PROMO ===");
 
-  // Membuat satu objek BarangPromo.
+  // Membuat objek BarangPromo.
   BarangPromo promo1 = BarangPromo(
     "Buku Gambar",
     10000,
@@ -159,16 +209,38 @@ void main() {
     20,
   );
 
-  // Menampilkan informasi barang promo.
-  promo1.tampilkanPromo();
+  // Memanggil method tampilkan() hasil override.
+  promo1.tampilkan();
+
+
+  print("");
+  print("=== BARANG GROSIR ===");
+
+  // Membuat objek BarangGrosir.
+  BarangGrosir grosir1 = BarangGrosir(
+    "Pulpen",
+    2500,
+    50,
+    10,
+  );
+
+  // Memanggil method tampilkan() hasil override.
+  grosir1.tampilkan();
+
+  // Mengecek minimal pembelian grosir.
+  if (grosir1.bisaGrosir(15)) {
+    print("Pembelian 15 Pulpen memenuhi syarat grosir.");
+  } else {
+    print("Pembelian belum memenuhi minimal grosir.");
+  }
+
 
   print("");
   print("=== UJI ENKAPSULASI DAN PENJUALAN ===");
 
-  // Membaca stok melalui getter.
   print("Stok awal Buku Tulis : ${barang1.stok}");
 
-  // Menjual 5 barang.
+  // Menjual 5 Buku Tulis.
   if (barang1.jual(5)) {
     print("Penjualan 5 Buku Tulis berhasil.");
   } else {
@@ -177,7 +249,7 @@ void main() {
 
   print("Stok setelah penjualan : ${barang1.stok}");
 
-  // Mencoba menjual lebih banyak dari stok yang tersedia.
+  // Mencoba menjual lebih banyak dari stok.
   if (barang1.jual(20)) {
     print("Penjualan 20 Buku Tulis berhasil.");
   } else {
@@ -185,9 +257,13 @@ void main() {
   }
 
   print("Stok akhir Buku Tulis : ${barang1.stok}");
-}
 
-// Melindungi _stok penting untuk menjaga integritas data koperasi.
-// Dengan _stok, perubahan stok tidak dapat dilakukan sembarangan dari luar class.
-// Stok hanya dapat berkurang melalui method jual() jika jumlahnya mencukupi.
-// Dengan begitu, stok tidak mudah menjadi salah atau negatif dan data koperasi tetap akurat.
+  print("");
+  print("=== UJI VALIDASI ANGKA ===");
+  prosesBeli("5");
+  prosesBeli("dua");
+  prosesBeli("abc");
+}
+// Penanganan galat membuat program tidak langsung berhenti saat terjadi kesalahan input.
+// Sistem memberikan pesan yang jelas dan tetap melanjutkan proses,
+// sehingga transaksi lebih aman dan pengurus lebih percaya pada sistem.
